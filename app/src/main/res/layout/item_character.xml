@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="18dp">
+
+    <ImageView
+        android:id="@+id/imageview_character"
+        android:layout_width="@dimen/image_character_list"
+        android:layout_height="@dimen/image_character_list"
+        tools:src="@mipmap/ic_launcher_round"
+        />
+
+    <TextView
+        android:id="@+id/texview_character_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:textSize="20sp"
+        tools:text="Tony Stark"/>
+
+</LinearLayout>

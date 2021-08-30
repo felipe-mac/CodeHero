@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Code Hero</string>
+    <string name="title_search">BUSCA MARVEL </string>
+    <string name="title_search_test">TESTE MOBILE</string>
+    <string name="title_name_character">Nome do Personagem</string>
+</resources>

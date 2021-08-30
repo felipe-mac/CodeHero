@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="horizontal_margin_default">30dp</dimen>
+    <dimen name="vertical_margin_default">12dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="horizontal_margin_character_searched_name">143dp</dimen> <!--30dp(default)+45dp(arrow)+60dp(distance)-->
+    <dimen name="image_character_list">100dp</dimen>
+    <dimen name="image_character_detail">250dp</dimen>
+</resources>
