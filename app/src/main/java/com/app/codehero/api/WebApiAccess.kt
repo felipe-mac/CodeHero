@@ -6,6 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+FELIPE
+ */
 object WebApiAccess {
 
     const val BASE_URL = "https://gateway.marvel.com:443/v1/public/"

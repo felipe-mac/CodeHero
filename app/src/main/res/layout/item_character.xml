@@ -15,7 +15,7 @@
         />
 
     <TextView
-        android:id="@+id/texview_character_name"
+        android:id="@+id/textview_character_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"

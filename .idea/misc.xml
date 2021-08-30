@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Geral/Android Study/CodeHero/app/src/main/res/layout-land/activity_main.xml" value="0.33" />
+        <entry key="..\:/Geral/Android Study/CodeHero/app/src/main/res/layout/activity_character_details.xml" value="0.25" />
+        <entry key="..\:/Geral/Android Study/CodeHero/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Geral/Android Study/CodeHero/app/src/main/res/layout/item_character.xml" value="0.17760416666666667" />
+        <entry key="..\:/Geral/Android Study/CodeHero/app/src/main/res/layout/item_page_indicator.xml" value="0.17760416666666667" />
+        <entry key="..\:/Geral/Android Study/CodeHero/app/src/main/res/layout/progress_alert_view.xml" value="0.32051282051282054" />
         <entry key="..\:/Users/Machado/Documents/Estudo Android/CodeHero/app/src/main/res/drawable/border_search.xml" value="0.2111111111111111" />
         <entry key="..\:/Users/Machado/Documents/Estudo Android/CodeHero/app/src/main/res/drawable/page_indicator_default.xml" value="0.17037037037037037" />
         <entry key="..\:/Users/Machado/Documents/Estudo Android/CodeHero/app/src/main/res/drawable/page_indicator_selector.xml" value="0.17037037037037037" />
@@ -14,6 +20,7 @@
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

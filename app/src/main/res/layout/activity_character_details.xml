@@ -9,14 +9,31 @@
         android:id="@+id/imageview_character"
         android:layout_width="@dimen/image_character_detail"
         android:layout_height="@dimen/image_character_detail"
+        android:layout_marginTop="@dimen/vertical_margin_default"
         tools:src="@mipmap/ic_launcher"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/vertical_margin_default"/>
+        />
 
     <TextView
         android:id="@+id/textview_title_character_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin_default"
+        android:layout_marginTop="@dimen/vertical_margin_default"
+        android:layout_marginEnd="@dimen/horizontal_margin_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageview_character"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="@string/title_character_description"
+        />
+
+    <TextView
+        android:id="@+id/textview_character_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/horizontal_margin_default"
@@ -28,7 +45,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageview_character"
+        app:layout_constraintTop_toBottomOf="@id/textview_title_character_description"
         tools:targetApi="m" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

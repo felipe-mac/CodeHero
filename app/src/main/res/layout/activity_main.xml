@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/text_view_search"
+        android:id="@+id/textview_title_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,26 +20,26 @@
         />
 
     <TextView
-        android:id="@+id/text_view_search_test"
+        android:id="@+id/textview_title_search_test"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/text_view_search"
-        app:layout_constraintStart_toEndOf="@id/text_view_search"
+        app:layout_constraintTop_toTopOf="@id/textview_title_search"
+        app:layout_constraintStart_toEndOf="@id/textview_title_search"
         android:fontFamily="sans-serif-light"
         android:text="@string/title_search_test"
         android:textColor="@color/bg_character_search_name"
         />
 
     <View
-        android:id="@+id/viwe_separator"
+        android:id="@+id/view_separator"
         android:layout_width="54dp"
         android:layout_height="4dp"
         android:background="@color/bg_character_search_name"
-        app:layout_constraintStart_toStartOf="@id/text_view_search"
-        app:layout_constraintTop_toBottomOf="@id/text_view_search"/>
+        app:layout_constraintStart_toStartOf="@id/textview_title_search"
+        app:layout_constraintTop_toBottomOf="@id/textview_title_search"/>
 
     <TextView
-        android:id="@+id/text_view_title_character_name"
+        android:id="@+id/textview_title_character_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/horizontal_margin_default"
@@ -50,21 +50,21 @@
         android:textColor="@color/bg_character_search_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viwe_separator" />
+        app:layout_constraintTop_toBottomOf="@id/view_separator" />
 
     <EditText
-        android:id="@+id/edit_text_search_character"
+        android:id="@+id/edittext_search_character"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_title_character_name"
+        app:layout_constraintTop_toBottomOf="@id/textview_title_character_name"
         android:layout_marginStart="@dimen/horizontal_margin_default"
         android:layout_marginEnd="@dimen/horizontal_margin_default"
         android:inputType="textCapWords"
         android:imeOptions="actionSearch"
         android:background="@drawable/border_search"
-        android:hint="Escrever"/>
+        tools:hint="Escrever"/>
 
     <RelativeLayout
         android:id="@+id/relative_container_search"
@@ -72,12 +72,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_search_character"
+        app:layout_constraintTop_toBottomOf="@id/edittext_search_character"
         android:layout_marginTop="@dimen/vertical_margin_default"
         android:background="@color/bg_character_search_name">
 
         <TextView
-            android:id="@+id/text_view_character_searched_name"
+            android:id="@+id/textview_title_collumn_character_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_margin_character_searched_name"
@@ -87,7 +87,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/recyclerview_characters"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/relative_container_search"

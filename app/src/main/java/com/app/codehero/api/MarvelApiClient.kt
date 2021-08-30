@@ -16,13 +16,13 @@ interface MarvelApiClient {
     @GET("characters")
     suspend fun getCharacters(
         @QueryMap(encoded = true) params: Map<String, String>
-/*        @Query("name") name: String,
+    ): Response<ResponseDefault<Characters>>
+    /*        @Query("name") name: String,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
         @Query("ts") timeStamp: String = "123456",
         @Query("apikey") apiKey: String = "2efa65bb32d8274ddef139a280e79fd9",
         @Query("hash") hash: String = "bd68d0d5cda9d525fa2d1fe97a4c7088"*/
-    ): Response<ResponseDefault<Characters>>
 
     @GET("characters/{characterId}")
     suspend fun getCharacterDetails(

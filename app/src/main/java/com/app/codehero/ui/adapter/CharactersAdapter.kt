@@ -12,10 +12,6 @@ class CharactersAdapter (private var dataSet: List<Character>,
                          private val onClick: (characterId: Int) -> Unit) :
     RecyclerView.Adapter<CharactersAdapter.ViewHolder>() {
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     class ViewHolder(private val binding: ItemCharacterBinding,
                      onClick: (characterId: Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
@@ -30,7 +26,7 @@ class CharactersAdapter (private var dataSet: List<Character>,
 
         fun bind(character: Character) {
             this.character = character
-            binding.texviewCharacterName.text = character.name
+            binding.textviewCharacterName.text = character.name
             val thumbnail = character.thumbnail
             binding.imageviewCharacter.loadFromUrl(thumbnail)
         }

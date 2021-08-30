@@ -12,24 +12,30 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.codehero.data.RemoteCharacterDataSource
+import com.app.codehero.data.CharRepository
+import com.app.codehero.data.RetrofitCharacterDataSource
 import com.app.codehero.databinding.ActivityMainBinding
 import com.app.codehero.domain.model.Character
+import com.app.codehero.domain.usecase.ListCharactersUseCaseImpl
 import com.app.codehero.ui.adapter.CharactersAdapter
 import com.app.codehero.ui.adapter.PageIndicatorAdapter
 import com.app.codehero.ui.main.CharacterDetailsActivity
-import com.app.codehero.ui.main.CharacterViewModel
+import com.app.codehero.ui.main.ListCharacterViewModel
+import com.app.codehero.utils.Constants
+import com.app.codehero.utils.DialogTools
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var p = 0
 
-    private val viewModel: CharacterViewModel by lazy {
+    private val viewModel: ListCharacterViewModel by lazy {
         ViewModelProvider(
             this,
-            CharacterViewModel.ViewModelFactory(RemoteCharacterDataSource())
-        ).get(CharacterViewModel::class.java)
+            ListCharacterViewModel.ViewModelFactory(
+                ListCharactersUseCaseImpl(CharRepository(RetrofitCharacterDataSource()))
+            )
+        ).get(ListCharacterViewModel::class.java)
     }
 
     private lateinit var mAdapter: CharactersAdapter
@@ -41,23 +47,37 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel.pageIndicator.observe(this, Observer { pages ->
+        viewModel.pageIndicator.observe(this, { pages ->
             Log.d("FMS", "montar $pages page indicator")
             createPageIndicator(pages)
         })
 
-        viewModel.characterList.observe(this, Observer { characterList ->
+        viewModel.characterList.observe(this, { characterList ->
             Log.d("FMS", "chars $characterList ")
             showList(characterList)
         })
 
-        viewModel.pageSelected.observe(this, Observer { page ->
+        viewModel.pageSelected.observe(this, { page ->
             Log.d("FMS", "pageSelectedObs $page")
             p = page
             binding.imageviewArrowLeft.isEnabled = p != 0
         })
 
-        binding.editTextSearchCharacter.setOnEditorActionListener { v, actionId, _ ->
+        viewModel.dialogDisplay.observe(this, { data ->
+            when (data.first) {
+                Constants.DIALOGTYPE.PROGRESS -> {
+                    showProgress(data.third)
+                }
+                Constants.DIALOGTYPE.ERROR -> {
+                    showError(data.second, data.third)
+                }
+                Constants.DIALOGTYPE.DISMISS -> {
+                    DialogTools.dismissProgressDialog()
+                }
+            }
+        })
+
+        binding.edittextSearchCharacter.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 Log.d("FMS", "search: ${v.text}")
                 val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -72,6 +92,14 @@ class MainActivity : AppCompatActivity() {
         configureRecyclerViewCharacters()
 
         viewModel.getCharacters()
+    }
+
+    private fun showProgress(message: String?) {
+        DialogTools.showProgressDialog(this, message!!)
+    }
+
+    private fun showError(title: String?, message: String?) {
+        DialogTools.showErrorDialog(this, title!!, message!!)
     }
 
     private fun configureRequestPage() {
@@ -106,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         mAdapter = CharactersAdapter(listOf()) { characterId ->
             openCharacterDetails(characterId)
         }
-        binding.recyclerview.apply {
+        binding.recyclerviewCharacters.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = mAdapter
             val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -120,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureRecyclerViewPages(pages: List<String>) {
         pageIndicatorAdapter = PageIndicatorAdapter(pages, p){
-            Log.d("FMS", "clicked: ${(it as TextView).text}")
+//            Log.d("FMS", "clicked: ${(it as TextView).text}")
             val page = (it as TextView).text.toString().toInt()
             pageSelected(page)
         }
@@ -132,6 +160,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun pageSelected(page: Int) {
         Log.d("FMS", "pageSelected $page ")
-        viewModel.getCharacters(page = page-1)
+        val textName = binding.edittextSearchCharacter.text.toString()
+        viewModel.getCharacters(textName, page-1)
     }
 }

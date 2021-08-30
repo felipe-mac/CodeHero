@@ -6,18 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.app.codehero.api.Result
-import com.app.codehero.data.CharacterRepository
 import com.app.codehero.domain.model.Character
+import com.app.codehero.domain.usecase.ListCharactersUseCase
+import com.app.codehero.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.ceil
 
-//https://howtodoandroid.com/mvvm-kotlin-coroutines-retrofit/#Making_it_work_with_Retrofit
-//https://github.com/IsaiasCuvula/android_paging3_retrofit2_mvvm
-
-class CharacterViewModel constructor(
-    private val dataSource: CharacterRepository
+class ListCharacterViewModel constructor(
+    private val listCharactersUseCase: ListCharactersUseCase
 ) :
     ViewModel() {
 
@@ -25,6 +22,9 @@ class CharacterViewModel constructor(
     private var currentPage: Int = initialPage
     private val itemsPerPage: Int = 4
     private var currentName: String = ""
+
+    private val _dialogDisplay = MutableLiveData<Triple<Int, String?, String?>>()
+    var dialogDisplay = _dialogDisplay
 
     private val _pageIndicator = MutableLiveData<Int>()
     var pageIndicator = _pageIndicator
@@ -42,7 +42,8 @@ class CharacterViewModel constructor(
         currentPage = page*itemsPerPage //ajuste do offset
         currentName = name
         viewModelScope.launch(Dispatchers.IO) {
-            when(val result = dataSource.getChars(currentName, currentPage, itemsPerPage)) {
+            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.PROGRESS, "Aguarde", "Carregando dados"))
+            when(val result = listCharactersUseCase.invoke(currentName, currentPage, itemsPerPage)) {
                 is Result.Success -> {
                     Log.d("FMS", "success")
                     if(currentPage == initialPage) {
@@ -50,13 +51,19 @@ class CharacterViewModel constructor(
                     }
                     currentPage = result.data?.offset?.div(itemsPerPage)!!
                     _pageSelected.postValue(currentPage)
-                    _characterList.postValue(result.data?.results)
+                    _characterList.postValue(result.data.results)
                 }
                 is Result.Failure -> {
                     Log.d("FMS","failure getCharacters: ${result.statusCode}")
+                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, "Erro ${result.statusCode}", result.exception.message))
                 }
-                else -> Log.d("FMS","server error getCharacters")
+                else -> {
+                    Log.d("FMS","server error getCharacters")
+                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, "Atenção", "Não foi possível se conectar ao servidor."))
+
+                }
             }
+            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.DISMISS, null, null))
         }
     }
 
@@ -69,21 +76,6 @@ class CharacterViewModel constructor(
         }
     }
 
-    fun getCharacterDetail(characterId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            when(val result = dataSource.getCharacterDetails(characterId)) {
-                is Result.Success -> {
-                    Log.d("FMS", "getCharacterDetail success")
-                    _character.postValue(result.data?.results?.first())
-                }
-                is Result.Failure -> {
-                    Log.d("FMS","getCharacterDetail failure getCharacters: ${result.statusCode}")
-                }
-                else -> Log.d("FMS","getCharacterDetail server error getCharacters")
-            }
-        }
-    }
-
     fun requestNextPage() {
         getCharacters(currentName, ++currentPage)
     }
@@ -93,11 +85,11 @@ class CharacterViewModel constructor(
     }
 
 
-    class ViewModelFactory(private val dataSource: CharacterRepository):
+    class ViewModelFactory(private val listCharactersUseCase: ListCharactersUseCase):
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if(modelClass.isAssignableFrom(CharacterViewModel::class.java)) {
-                return CharacterViewModel(dataSource) as T
+            if(modelClass.isAssignableFrom(ListCharacterViewModel::class.java)) {
+                return ListCharacterViewModel(listCharactersUseCase) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
