@@ -39,7 +39,7 @@ class PageIndicatorAdapter(
         page = newPage
     }
 
-    fun selectPage(view: View, select: Boolean) {
+    private fun selectPage(view: View, select: Boolean) {
         Log.d("FMS","selectPage: ${(view as TextView).text} $select")
         val textView = view as TextView
         textView.isSelected = select

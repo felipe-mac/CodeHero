@@ -21,16 +21,6 @@ fun ImageView.loadFromUrl(thumbnail: Thumbnail) {
         .into(this)
 }
 
-
-fun String.formatDate(): String? {
-    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    val date = inputFormat.parse(this)
-    val outPutFormat: DateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-    return date?.let {
-        outPutFormat.format(it).toString()
-    }
-}
-
 fun String.toMD5(): String {
     val md5 = "MD5"
     val digest: MessageDigest = MessageDigest.getInstance(md5)

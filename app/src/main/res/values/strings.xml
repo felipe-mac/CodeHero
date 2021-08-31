@@ -4,4 +4,10 @@
     <string name="title_search_test">TESTE MOBILE</string>
     <string name="title_name_character">Nome do Personagem</string>
     <string name="title_character_description">Descrição:</string>
+    <string name="wait">Aguarde</string>
+    <string name="attention">Atenção</string>
+    <string name="error">Erro</string>
+    <string name="connection_server_failed">Não foi possível se conectar ao servidor.</string>
+    <string name="loading_data">Carregando dados</string>
+    <string name="timeFormat">Erro %1$s</string>
 </resources>

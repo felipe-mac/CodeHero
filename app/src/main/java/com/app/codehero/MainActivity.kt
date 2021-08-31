@@ -8,11 +8,10 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.codehero.data.CharRepository
+import com.app.codehero.data.CharacterRepository
 import com.app.codehero.data.RetrofitCharacterDataSource
 import com.app.codehero.databinding.ActivityMainBinding
 import com.app.codehero.domain.model.Character
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(
             this,
             ListCharacterViewModel.ViewModelFactory(
-                ListCharactersUseCaseImpl(CharRepository(RetrofitCharacterDataSource()))
+                ListCharactersUseCaseImpl(CharacterRepository(RetrofitCharacterDataSource()))
             )
         ).get(ListCharacterViewModel::class.java)
     }
@@ -48,17 +47,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         viewModel.pageIndicator.observe(this, { pages ->
-            Log.d("FMS", "montar $pages page indicator")
             createPageIndicator(pages)
         })
 
         viewModel.characterList.observe(this, { characterList ->
-            Log.d("FMS", "chars $characterList ")
             showList(characterList)
         })
 
         viewModel.pageSelected.observe(this, { page ->
-            Log.d("FMS", "pageSelectedObs $page")
             p = page
             binding.imageviewArrowLeft.isEnabled = p != 0
         })
@@ -79,7 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.edittextSearchCharacter.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Log.d("FMS", "search: ${v.text}")
                 val imm = this@MainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(v.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
                 viewModel.getCharacters(v.text.toString())
@@ -94,12 +89,19 @@ class MainActivity : AppCompatActivity() {
         viewModel.getCharacters()
     }
 
-    private fun showProgress(message: String?) {
-        DialogTools.showProgressDialog(this, message!!)
+    private fun showProgress(messageResource: Any?) {
+        messageResource?.let {
+            DialogTools.showProgressDialog(this, getString(it as Int))
+        }
+
     }
 
-    private fun showError(title: String?, message: String?) {
-        DialogTools.showErrorDialog(this, title!!, message!!)
+    private fun showError(titleRes: Any?, messageRes: Any?) {
+        if(titleRes != null && messageRes != null) {
+            val title = if(titleRes is Int) getString(titleRes) else titleRes as String
+            val message = if(messageRes is Int) getString(messageRes) else messageRes as String
+            DialogTools.showErrorDialog(this, title, message)
+        }
     }
 
     private fun configureRequestPage() {
@@ -148,7 +150,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureRecyclerViewPages(pages: List<String>) {
         pageIndicatorAdapter = PageIndicatorAdapter(pages, p){
-//            Log.d("FMS", "clicked: ${(it as TextView).text}")
             val page = (it as TextView).text.toString().toInt()
             pageSelected(page)
         }
@@ -159,7 +160,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun pageSelected(page: Int) {
-        Log.d("FMS", "pageSelected $page ")
         val textName = binding.edittextSearchCharacter.text.toString()
         viewModel.getCharacters(textName, page-1)
     }

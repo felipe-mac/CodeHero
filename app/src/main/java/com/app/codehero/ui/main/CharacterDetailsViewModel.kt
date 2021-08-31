@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.app.codehero.R
 import com.app.codehero.api.Result
 import com.app.codehero.domain.model.Character
 import com.app.codehero.domain.usecase.CharacterDetailsUseCase
@@ -17,7 +18,7 @@ class CharacterDetailsViewModel constructor(
 ) :
     ViewModel() {
 
-    private val _dialogDisplay = MutableLiveData<Triple<Int, String?, String?>>()
+    private val _dialogDisplay = MutableLiveData<Triple<Int, Any?, Any?>>()
     var dialogDisplay = _dialogDisplay
 
     private val _character = MutableLiveData<Character>()
@@ -25,22 +26,19 @@ class CharacterDetailsViewModel constructor(
 
     fun getCharacterDetail(characterId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.PROGRESS, "Aguarde", "Carregando dados"))
+            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.PROGRESS, R.string.wait, R.string.loading_data))
             when(val result = characterDetailsUseCase.invoke(characterId)) {
                 is Result.Success -> {
-                    Log.d("FMS", "getCharacterDetail success")
                     _character.postValue(result.data?.results?.first())
+                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.DISMISS, null, null))
                 }
                 is Result.Failure -> {
-                    Log.d("FMS","getCharacterDetail failure getCharacters: ${result.statusCode}")
                     _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, "Erro ${result.statusCode}", result.exception.message))
                 }
                 else -> {
-                    Log.d("FMS","getCharacterDetail server error getCharacters")
-                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, "Atenção", "Não foi possível se conectar ao servidor."))
+                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, R.string.attention, R.string.connection_server_failed))
                 }
             }
-            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.DISMISS, null, null))
         }
     }
 

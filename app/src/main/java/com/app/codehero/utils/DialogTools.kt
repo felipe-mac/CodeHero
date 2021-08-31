@@ -1,6 +1,7 @@
 package com.app.codehero.utils
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
@@ -29,6 +30,7 @@ object DialogTools {
 
 
     fun showErrorDialog(context: Context, title: String, message: String) {
+        dismissProgressDialog()
         showMessageDialog(context, title, message)
     }
 

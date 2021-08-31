@@ -1,10 +1,12 @@
 package com.app.codehero.ui.main
 
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.app.codehero.R
 import com.app.codehero.api.Result
 import com.app.codehero.domain.model.Character
 import com.app.codehero.domain.usecase.ListCharactersUseCase
@@ -23,7 +25,7 @@ class ListCharacterViewModel constructor(
     private val itemsPerPage: Int = 4
     private var currentName: String = ""
 
-    private val _dialogDisplay = MutableLiveData<Triple<Int, String?, String?>>()
+    private val _dialogDisplay = MutableLiveData<Triple<Int, Any?, Any?>>()
     var dialogDisplay = _dialogDisplay
 
     private val _pageIndicator = MutableLiveData<Int>()
@@ -35,44 +37,38 @@ class ListCharacterViewModel constructor(
     private val _characterList = MutableLiveData<List<Character>>()
     var characterList = _characterList
 
-    private val _character = MutableLiveData<Character>()
-    var character = _character
-
     fun getCharacters(name: String = "", page: Int=initialPage) {
         currentPage = page*itemsPerPage //ajuste do offset
         currentName = name
         viewModelScope.launch(Dispatchers.IO) {
-            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.PROGRESS, "Aguarde", "Carregando dados"))
+            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.PROGRESS, null, R.string.loading_data))
             when(val result = listCharactersUseCase.invoke(currentName, currentPage, itemsPerPage)) {
                 is Result.Success -> {
-                    Log.d("FMS", "success")
                     if(currentPage == initialPage) {
                         configurePagination(result.data?.total)
                     }
                     currentPage = result.data?.offset?.div(itemsPerPage)!!
                     _pageSelected.postValue(currentPage)
                     _characterList.postValue(result.data.results)
+                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.DISMISS, null, null))
                 }
                 is Result.Failure -> {
-                    Log.d("FMS","failure getCharacters: ${result.statusCode}")
                     _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, "Erro ${result.statusCode}", result.exception.message))
                 }
                 else -> {
-                    Log.d("FMS","server error getCharacters")
-                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, "Atenção", "Não foi possível se conectar ao servidor."))
+                    _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.ERROR, R.string.attention, R.string.connection_server_failed))
 
                 }
             }
-            _dialogDisplay.postValue(Triple(Constants.DIALOGTYPE.DISMISS, null, null))
+
         }
     }
 
     private fun configurePagination(total: Int?) {
         total?.let {
-            //calculando a quantidade de páginas para serem montadas
+            //calculando a quantidade de indicadores de páginas para serem montadas
             val pages = ceil(it/itemsPerPage.toDouble()).toInt()
-            //mandar para activity
-                _pageIndicator.postValue(pages)
+            _pageIndicator.postValue(pages)
         }
     }
 

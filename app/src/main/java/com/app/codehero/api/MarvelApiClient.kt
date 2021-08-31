@@ -27,9 +27,7 @@ interface MarvelApiClient {
     @GET("characters/{characterId}")
     suspend fun getCharacterDetails(
         @Path("characterId") characterId: Int,
-        @Query("ts") timeStamp: String = "123456",
-        @Query("apikey") apiKey: String = "2efa65bb32d8274ddef139a280e79fd9",
-        @Query("hash") hash: String = "bd68d0d5cda9d525fa2d1fe97a4c7088"
+        @QueryMap(encoded = true) params: Map<String, String>
     ): Response<ResponseDefault<Characters>>
 
 }
