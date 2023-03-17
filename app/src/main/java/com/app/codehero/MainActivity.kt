@@ -23,20 +23,22 @@ import com.app.codehero.ui.main.CharacterDetailsActivity
 import com.app.codehero.ui.main.ListCharacterViewModel
 import com.app.codehero.utils.Constants
 import com.app.codehero.utils.DialogTools
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var p = 0
 
-    private val viewModel: ListCharacterViewModel by lazy {
+    /*private val viewModel: ListCharacterViewModel by lazy {
         ViewModelProvider(
             this,
             ListCharacterViewModel.ViewModelFactory(
                 ListCharactersUseCaseImpl(CharRepository(RetrofitCharacterDataSource()))
             )
         ).get(ListCharacterViewModel::class.java)
-    }
+    }*/
+    private val viewModel: ListCharacterViewModel by viewModel()
 
     private lateinit var mAdapter: CharactersAdapter
     private lateinit var pageIndicatorAdapter: PageIndicatorAdapter
@@ -47,23 +49,23 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel.pageIndicator.observe(this, { pages ->
+        viewModel.pageIndicator.observe(this) { pages ->
             Log.d("FMS", "montar $pages page indicator")
             createPageIndicator(pages)
-        })
+        }
 
-        viewModel.characterList.observe(this, { characterList ->
+        viewModel.characterList.observe(this) { characterList ->
             Log.d("FMS", "chars $characterList ")
             showList(characterList)
-        })
+        }
 
-        viewModel.pageSelected.observe(this, { page ->
+        viewModel.pageSelected.observe(this) { page ->
             Log.d("FMS", "pageSelectedObs $page")
             p = page
             binding.imageviewArrowLeft.isEnabled = p != 0
-        })
+        }
 
-        viewModel.dialogDisplay.observe(this, { data ->
+        viewModel.dialogDisplay.observe(this) { data ->
             when (data.first) {
                 Constants.DIALOGTYPE.PROGRESS -> {
                     showProgress(data.third)
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                     DialogTools.dismissProgressDialog()
                 }
             }
-        })
+        }
 
         binding.edittextSearchCharacter.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {

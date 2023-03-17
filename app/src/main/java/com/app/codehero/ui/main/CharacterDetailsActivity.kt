@@ -20,6 +20,8 @@ import com.app.codehero.utils.loadFromUrl
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharacterDetailsActivity : AppCompatActivity() {
 
@@ -31,8 +33,8 @@ class CharacterDetailsActivity : AppCompatActivity() {
             CharacterViewModel.ViewModelFactory(RemoteCharacterDataSource())
         ).get(CharacterViewModel::class.java)*/
 
-
-    private val viewModel: CharacterDetailsViewModel by lazy {
+    private val viewModel by inject<CharacterDetailsViewModel>()
+    /*private val viewModel: CharacterDetailsViewModel by lazy {
         ViewModelProvider(
             this,
             CharacterDetailsViewModel.ViewModelFactory(
@@ -41,7 +43,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
                 ))
             )
         ).get(CharacterDetailsViewModel::class.java)
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +51,11 @@ class CharacterDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel.character.observe(this, {
+        viewModel.character.observe(this) {
             configureDetails(it)
-        })
+        }
 
-        viewModel.dialogDisplay.observe(this, { data ->
+        viewModel.dialogDisplay.observe(this) { data ->
             when (data.first) {
                 Constants.DIALOGTYPE.PROGRESS -> {
                     showProgress(data.third)
@@ -65,7 +67,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
                     DialogTools.dismissProgressDialog()
                 }
             }
-        })
+        }
 
         val characterId = intent.extras?.getInt(CHARACTERID)
         characterId?.let {

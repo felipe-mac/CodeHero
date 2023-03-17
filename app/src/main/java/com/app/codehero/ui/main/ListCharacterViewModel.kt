@@ -85,7 +85,7 @@ class ListCharacterViewModel constructor(
     }
 
 
-    class ViewModelFactory(private val listCharactersUseCase: ListCharactersUseCase):
+    /*class ViewModelFactory(private val listCharactersUseCase: ListCharactersUseCase):
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if(modelClass.isAssignableFrom(ListCharacterViewModel::class.java)) {
@@ -93,5 +93,5 @@ class ListCharacterViewModel constructor(
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
-    }
+    }*/
 }
