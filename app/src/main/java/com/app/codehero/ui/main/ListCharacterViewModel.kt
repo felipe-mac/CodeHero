@@ -9,11 +9,13 @@ import com.app.codehero.api.Result
 import com.app.codehero.domain.model.Character
 import com.app.codehero.domain.usecase.ListCharactersUseCase
 import com.app.codehero.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.ceil
 
+@HiltViewModel
 class ListCharacterViewModel @Inject constructor(
     private val listCharactersUseCase: ListCharactersUseCase
 ) :

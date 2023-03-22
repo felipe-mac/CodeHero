@@ -1,15 +1,15 @@
 package com.app.codehero
 
 import android.app.Application
-import com.app.codehero.di.ApplicationComponent
-import com.app.codehero.di.DaggerApplicationComponent
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class CodeHeroApp: Application() {
 
-    lateinit var appComponent: ApplicationComponent
+//    lateinit var appComponent: ApplicationComponent
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerApplicationComponent.factory().create(this)
+//        appComponent = DaggerApplicationComponent.factory().create(this)
     }
 }

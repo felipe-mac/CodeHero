@@ -9,10 +9,12 @@ import com.app.codehero.api.Result
 import com.app.codehero.domain.model.Character
 import com.app.codehero.domain.usecase.CharacterDetailsUseCase
 import com.app.codehero.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
     private val characterDetailsUseCase: CharacterDetailsUseCase
 ) :

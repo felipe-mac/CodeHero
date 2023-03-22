@@ -8,8 +8,7 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.codehero.databinding.ActivityMainBinding
@@ -20,20 +19,17 @@ import com.app.codehero.ui.main.CharacterDetailsActivity
 import com.app.codehero.ui.main.ListCharacterViewModel
 import com.app.codehero.utils.Constants
 import com.app.codehero.utils.DialogTools
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var p = 0
 
-/*    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory*/
 
-    @Inject
-    lateinit var viewModel: ListCharacterViewModel
+    private val viewModel: ListCharacterViewModel by viewModels()
 
-//    private val viewModel by viewModels<ListCharacterViewModel> { viewModelFactory }
 
     private lateinit var mAdapter: CharactersAdapter
     private lateinit var pageIndicatorAdapter: PageIndicatorAdapter
@@ -42,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        (applicationContext as CodeHeroApp).appComponent.mainComponent().create().inject(this)
         val view = binding.root
         setContentView(view)
 

@@ -4,8 +4,9 @@ import com.app.codehero.api.Result
 import com.app.codehero.api.WebApiAccess
 import com.app.codehero.domain.model.Character
 import com.app.codehero.domain.model.Characters
+import javax.inject.Inject
 
-class RetrofitCharacterDataSource: CharacterDataSource {
+class RetrofitCharacterDataSource @Inject constructor(): CharacterDataSource {
 
     override suspend fun getChars(name: String, offset: Int, count: Int) : Result<Characters?> {
         return try {

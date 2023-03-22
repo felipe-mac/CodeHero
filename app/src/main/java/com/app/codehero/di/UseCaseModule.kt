@@ -8,17 +8,16 @@ import com.app.codehero.domain.usecase.ListCharactersUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-class UseCaseModule {
+@InstallIn(ViewModelComponent::class)
+interface UseCaseModule {
 
-    @Provides
-    fun provideListCharactersUseCase(repository: CharRepository): ListCharactersUseCase {
-        return ListCharactersUseCaseImpl(repository)
-    }
+    @Binds
+    fun bindListCharactersUseCase(useCase: ListCharactersUseCaseImpl): ListCharactersUseCase
 
-    @Provides
-    fun provideCharacterDetailsUseCase(repository: CharRepository): CharacterDetailsUseCase {
-        return CharacterDetailsUseCaseImpl(repository)
-    }
+    @Binds
+    fun bindCharacterDetailsUseCase(useCase: CharacterDetailsUseCaseImpl): CharacterDetailsUseCase
 }

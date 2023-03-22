@@ -6,13 +6,17 @@ import com.app.codehero.data.RetrofitCharacterDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
-class DataModule {
+/*@Module
+@InstallIn(SingletonComponent::class)*/
+interface DataModule {
 
-    @Provides
-    @Singleton
-    fun provideCharRepository(dataSource: CharacterDataSource): CharRepository = CharRepository(dataSource)
+
+/*    @Singleton
+    @Binds
+    fun bindCharRepository(repository: CharRepository):  CharRepository*/
 }
 

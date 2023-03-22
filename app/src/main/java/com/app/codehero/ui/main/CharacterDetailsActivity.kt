@@ -6,37 +6,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.app.codehero.CodeHeroApp
-import com.app.codehero.data.CharRepository
-import com.app.codehero.data.RetrofitCharacterDataSource
+import androidx.activity.viewModels
 import com.app.codehero.databinding.ActivityCharacterDetailsBinding
 import com.app.codehero.domain.model.Character
-import com.app.codehero.domain.usecase.CharacterDetailsUseCaseImpl
 import com.app.codehero.utils.Constants
 import com.app.codehero.utils.Constants.CHARACTERID
 import com.app.codehero.utils.DialogTools
-import com.app.codehero.utils.loadFromUrl
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCharacterDetailsBinding
 
-    @Inject
-    lateinit var viewModel: CharacterDetailsViewModel
+     private val viewModel: CharacterDetailsViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
-        (applicationContext as CodeHeroApp).appComponent.mainComponent().create().inject(this)
 
         val view = binding.root
         setContentView(view)
