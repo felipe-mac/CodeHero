@@ -11,8 +11,9 @@ import com.app.codehero.domain.usecase.CharacterDetailsUseCase
 import com.app.codehero.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CharacterDetailsViewModel constructor(
+class CharacterDetailsViewModel @Inject constructor(
     private val characterDetailsUseCase: CharacterDetailsUseCase
 ) :
     ViewModel() {

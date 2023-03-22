@@ -12,33 +12,28 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.codehero.data.CharRepository
-import com.app.codehero.data.RetrofitCharacterDataSource
 import com.app.codehero.databinding.ActivityMainBinding
 import com.app.codehero.domain.model.Character
-import com.app.codehero.domain.usecase.ListCharactersUseCaseImpl
 import com.app.codehero.ui.adapter.CharactersAdapter
 import com.app.codehero.ui.adapter.PageIndicatorAdapter
 import com.app.codehero.ui.main.CharacterDetailsActivity
 import com.app.codehero.ui.main.ListCharacterViewModel
 import com.app.codehero.utils.Constants
 import com.app.codehero.utils.DialogTools
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var p = 0
 
-    /*private val viewModel: ListCharacterViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ListCharacterViewModel.ViewModelFactory(
-                ListCharactersUseCaseImpl(CharRepository(RetrofitCharacterDataSource()))
-            )
-        ).get(ListCharacterViewModel::class.java)
-    }*/
-    private val viewModel: ListCharacterViewModel by viewModel()
+/*    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory*/
+
+    @Inject
+    lateinit var viewModel: ListCharacterViewModel
+
+//    private val viewModel by viewModels<ListCharacterViewModel> { viewModelFactory }
 
     private lateinit var mAdapter: CharactersAdapter
     private lateinit var pageIndicatorAdapter: PageIndicatorAdapter
@@ -46,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        (applicationContext as CodeHeroApp).appComponent.mainComponent().create().inject(this)
         val view = binding.root
         setContentView(view)
 

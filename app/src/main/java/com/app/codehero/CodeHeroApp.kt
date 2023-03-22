@@ -1,25 +1,15 @@
 package com.app.codehero
 
 import android.app.Application
-import com.app.codehero.di.viewModelModule
-import com.app.codehero.di.repositoryModule
-import com.app.codehero.di.useCaseModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import com.app.codehero.di.ApplicationComponent
+import com.app.codehero.di.DaggerApplicationComponent
 
 class CodeHeroApp: Application() {
 
+    lateinit var appComponent: ApplicationComponent
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            androidLogger()
-            androidContext(this@CodeHeroApp)
-            modules(
-                viewModelModule,
-                repositoryModule,
-                useCaseModule
-            )
-        }
+
+        appComponent = DaggerApplicationComponent.factory().create(this)
     }
 }

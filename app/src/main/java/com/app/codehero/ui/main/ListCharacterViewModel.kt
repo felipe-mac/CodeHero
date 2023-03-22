@@ -11,9 +11,10 @@ import com.app.codehero.domain.usecase.ListCharactersUseCase
 import com.app.codehero.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.math.ceil
 
-class ListCharacterViewModel constructor(
+class ListCharacterViewModel @Inject constructor(
     private val listCharactersUseCase: ListCharactersUseCase
 ) :
     ViewModel() {

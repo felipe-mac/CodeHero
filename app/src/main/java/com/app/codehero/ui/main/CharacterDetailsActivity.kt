@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.app.codehero.CodeHeroApp
 import com.app.codehero.data.CharRepository
 import com.app.codehero.data.RetrofitCharacterDataSource
 import com.app.codehero.databinding.ActivityCharacterDetailsBinding
@@ -22,32 +23,21 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class CharacterDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCharacterDetailsBinding
 
-    /*private val viewModel: CharacterViewModel by lazy {
-        ViewModelProvider(
-            this,
-            CharacterViewModel.ViewModelFactory(RemoteCharacterDataSource())
-        ).get(CharacterViewModel::class.java)*/
+    @Inject
+    lateinit var viewModel: CharacterDetailsViewModel
 
-    private val viewModel by inject<CharacterDetailsViewModel>()
-    /*private val viewModel: CharacterDetailsViewModel by lazy {
-        ViewModelProvider(
-            this,
-            CharacterDetailsViewModel.ViewModelFactory(
-                CharacterDetailsUseCaseImpl(CharRepository(
-                    RetrofitCharacterDataSource()
-                ))
-            )
-        ).get(CharacterDetailsViewModel::class.java)
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
+        (applicationContext as CodeHeroApp).appComponent.mainComponent().create().inject(this)
+
         val view = binding.root
         setContentView(view)
 

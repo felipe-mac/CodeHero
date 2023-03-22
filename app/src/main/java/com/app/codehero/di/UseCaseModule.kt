@@ -1,22 +1,24 @@
 package com.app.codehero.di
 
+import com.app.codehero.data.CharRepository
 import com.app.codehero.domain.usecase.CharacterDetailsUseCase
 import com.app.codehero.domain.usecase.CharacterDetailsUseCaseImpl
 import com.app.codehero.domain.usecase.ListCharactersUseCase
 import com.app.codehero.domain.usecase.ListCharactersUseCaseImpl
-import org.koin.dsl.module
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
 
-val useCaseModule = module {
+@Module
+class UseCaseModule {
 
-    factory<ListCharactersUseCase> {
-        ListCharactersUseCaseImpl(
-            charRepository = get()
-        )
+    @Provides
+    fun provideListCharactersUseCase(repository: CharRepository): ListCharactersUseCase {
+        return ListCharactersUseCaseImpl(repository)
     }
 
-    factory<CharacterDetailsUseCase> {
-        CharacterDetailsUseCaseImpl(
-            charRepository = get()
-        )
+    @Provides
+    fun provideCharacterDetailsUseCase(repository: CharRepository): CharacterDetailsUseCase {
+        return CharacterDetailsUseCaseImpl(repository)
     }
 }
